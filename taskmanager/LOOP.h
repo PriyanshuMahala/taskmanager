@@ -5,7 +5,6 @@
 #include <string>
 #include "tasks.h"
 
-
 void LOOP() {
 	std::vector<tasks::Folder*> folders;
 	tasks::load(folders, tasks::FILENAME);// Will display error when run for the first time
@@ -82,6 +81,57 @@ void LOOP() {
 			currentFolder->addTask(taskNAME, dueDate, label, PriorityLvl);
 			std::cout << "New task added to " << folderName << " folder" << '\n';
 		}
+		else if (option == 3) {
+			std::string FolderName;
+			bool isFound = false;
+			tasks::Folder* currentFolder = nullptr;
+			std::vector<tasks::Folder*>::iterator it;
+
+			std::cout << "Enter Folder name: ";
+			std::getline(std::cin, FolderName);
+
+			for (it = folders.begin(); it != folders.end(); ++it) {
+				if ((*it)->getLabel() == FolderName) {
+					isFound = true;
+					currentFolder = *it;
+					break;
+				}
+			}
+
+			if (!isFound) {
+				std::cout << "Could not find a folder named " << FolderName << '\n';
+				continue;
+			}
+
+			// Delete the folder and remove it from the vector
+			delete currentFolder;
+			folders.erase(it);
+			std::cout << "Deleted folder " << FolderName << '\n';
+		}
+
+		else if (option == 4) {
+			std::string FolderName;
+			bool isFound = false;
+			tasks::Folder* currentFolder = nullptr;
+			tasks::task* currentTask = nullptr;
+			std::string taskName;
+
+			std::cout << "Enter Folder name: ";
+			std::getline(std::cin, FolderName);
+
+			for (tasks::Folder* fold : folders) {
+				if (fold->getLabel() == FolderName) { isFound = true; currentFolder = fold; break; }
+			}
+			if (!isFound) { std::cout << "Could not find a folder named " << FolderName << '\n'; }
+			isFound = false;
+
+			std::cout << "Enter task name: ";
+			std::getline(std::cin, taskName);
+
+			currentFolder->removeTask(taskName);
+			
+		}
+
 		else if (option == 5) {
 			char option;
 			bool isFound = false;
@@ -116,7 +166,7 @@ void LOOP() {
 				for (tasks::task* t : currentFolder->getTaskVector()) {
 					if (t->getTask() == taskName) { isFound = true; currentTask = t; break; }
 				}
-				if (!isFound) { std::cout << "Could not find task: " << taskName << '\n'; continue; }
+				if (!isFound) { std::cout << "Could not find task: " << taskName << " in folder " << currentFolder << '\n'; }
 				std::cout << "Enter new task dueDate: ";
 				std::cin >> newString;
 
@@ -135,7 +185,7 @@ void LOOP() {
 				for (tasks::task* t : currentFolder->getTaskVector()) {
 					if (t->getTask() == taskName) { isFound = true; currentTask = t; break; }
 				}
-				if (!isFound) { std::cout << "Could not find task: " << taskName << '\n'; continue; }
+				if (!isFound) { std::cout << "Could not find task: " << taskName << " in folder " << currentFolder << '\n'; }
 				std::cout << "Enter new task priority level: ";
 				std::cin >> newInt;
 

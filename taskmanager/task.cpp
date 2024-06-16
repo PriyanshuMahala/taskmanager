@@ -134,6 +134,11 @@ namespace tasks {
 		std::cout << '\n';
 	}
 
+	void refresh(std::vector<Folder*> folders) {
+		unload(folders, FILENAME);
+		load(folders, FILENAME);
+	}
+
 	bool isInt(int& val) {
 		if (!std::cin >> val) {
 			std::cin.clear();
@@ -141,4 +146,6 @@ namespace tasks {
 		}
 		return true;
 	}
+
+	
 }

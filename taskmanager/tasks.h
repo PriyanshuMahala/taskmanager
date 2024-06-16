@@ -24,7 +24,6 @@ namespace tasks {
 
 		void setPriorityLvl(int lvl) { priorityLvl = lvl; }
 		void setDueDate(std::string d) { dueDate = d; }
-
 	};
 
 	class Folder {
@@ -53,7 +52,9 @@ namespace tasks {
 	void load(std::vector<Folder*>& folders, const std::string& filename);
 	void unload(const std::vector<Folder*>& folders, const std::string& filename);
 	void transfer(const std::vector<Folder*>& folders, const std::string& filename);
+	void refresh(std::vector<Folder*> folders);
 
 	//Functionality
 	bool isInt(int& val);
+	
 }
