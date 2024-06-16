@@ -26,5 +26,8 @@
     <ClInclude Include="tasks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LOOP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

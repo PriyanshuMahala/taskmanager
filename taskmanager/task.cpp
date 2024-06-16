@@ -120,13 +120,18 @@ namespace tasks {
 				}
 			}
 		}
-
+		system("cls");
+		std::cout << getLabel() << " tasks" << '\n';
 		for (task* t : pTasks) {
+			std::cout << "=== === === === === === === === ===" << std::endl;
+			std::cout << '\n';
 			std::cout << "Task: " << t->getTask() << '\n';
 			std::cout << "Due date: " << t->getDueDate() << '\n';
 			std::cout << "Label: " << t->getLabel() << '\n';
 			std::cout << "Priority level: " << t->getPriorityLvl() << '\n';
 		}
+		std::cout << "=== === === === === === === === ===" << std::endl;
+		std::cout << '\n';
 	}
 
 	bool isInt(int& val) {

@@ -24,6 +24,7 @@ namespace tasks {
 
 		void setPriorityLvl(int lvl) { priorityLvl = lvl; }
 		void setDueDate(std::string d) { dueDate = d; }
+
 	};
 
 	class Folder {
@@ -41,6 +42,10 @@ namespace tasks {
 		std::vector<task*>& getTaskVector() { return pTasks; }
 		void addTask(std::string t, std::string dd, std::string l, int pl);
 		void removeTask(std::string taskName);
+
+		void setLabel(std::string label_) { label = label_; }
+		void setDescription(std::string description_) { description = description_; }
+
 		void PrintTasks(bool toLoad);
 	};
 
