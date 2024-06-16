@@ -12,6 +12,7 @@ int main() {
 
 void LOOP() {
 	std::vector<tasks::Folder*> folders;
+	tasks::load(folders, tasks::FILENAME);
 	while (true) {
 		int option;
 		std::cout << "1. Add folder" << '\n';
@@ -20,11 +21,13 @@ void LOOP() {
 		std::cout << "4. Remove task" << '\n';
 		std::cout << "5. Change " << '\n';
 		std::cout << "6. Display All " << '\n';
+		std::cout << "7. Clear" << '\n';
+		std::cout << "8. Save and Exit " << '\n';
 		std::cout << "Enter your option: ";
 
 		// Read option input and validate it
-		if (!(std::cin >> option) || option < 1 || option > 6) {
-			std::cout << "Invalid option! Please enter a valid int between 1 and 6.\n";
+		if (!(std::cin >> option) || option < 1 || option > 8) {
+			std::cout << "Invalid option! Please enter a valid int between 1 and 8.\n";
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			continue;
@@ -95,6 +98,14 @@ void LOOP() {
 			}
 			if (!isFound) { std::cout << "Could not find folder " << FolderName << '\n'; continue; }
 			currentFolder->PrintTasks(false);
+		}
+		else if (option == 7) {
+			system("cls");
+		}
+		else if (option == 8) {
+			tasks::unload(folders, tasks::FILENAME);
+			std::cout << "Saved all tasks..." << '\n';
+			return;
 		}
 	}
 

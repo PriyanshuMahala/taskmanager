@@ -12,17 +12,22 @@ namespace tasks {
 			delete t;
 		}
 	}
+
 	void Folder::addTask(std::string t, std::string dd, std::string l, int pl) {
 		pTasks.push_back(new task(t, dd, pl, l));
 	}
 
 	void Folder::removeTask(std::string taskName) {
-		for (task* t : pTasks) {
-			if (t->getTask() == taskName) { delete t; return; }
+		for (auto it = pTasks.begin(); it != pTasks.end(); ++it) {
+			if ((*it)->getTask() == taskName) {
+				delete* it;
+				pTasks.erase(it);
+				return;
+			}
 		}
 	}
 
-	void load(std::vector<task*>& taskPointers, const std::string& filename) {
+	void load(std::vector<Folder*>& folders, const std::string& filename) {
 		std::ifstream file(filename);
 
 		if (!file.is_open()) {
@@ -33,21 +38,35 @@ namespace tasks {
 		std::string line;
 		while (std::getline(file, line)) {
 			std::istringstream iss(line);
-			std::string text, dueDate, label;
+			std::string folderName, text, dueDate, label;
 			int priorityLvl;
 
-			if (std::getline(iss, text, ',') &&
+			if (std::getline(iss, folderName, ',') &&
+				std::getline(iss, text, ',') &&
 				std::getline(iss, dueDate, ',') &&
 				std::getline(iss, label, ',') &&
 				iss >> priorityLvl) {
-				taskPointers.push_back(new task(text, dueDate, priorityLvl, label));
+				Folder* currentFolder = nullptr;
+				for (auto& folder : folders) {
+					if (folder->getLabel() == folderName) {
+						currentFolder = folder;
+						break;
+					}
+				}
+
+				if (!currentFolder) {
+					currentFolder = new Folder(folderName, "");
+					folders.push_back(currentFolder);
+				}
+
+				currentFolder->addTask(text, dueDate, label, priorityLvl);
 			}
 		}
 
 		file.close();
 	}
 
-	void unload(std::vector<task*>& taskPointers, const std::string& filename) {
+	void unload(const std::vector<Folder*>& folders, const std::string& filename) {
 		std::ofstream file(filename);
 
 		if (!file.is_open()) {
@@ -55,18 +74,21 @@ namespace tasks {
 			return;
 		}
 
-		for (const auto& t : taskPointers) {
-			file << t->getTask() << ","
-				<< t->getDueDate() << ","
-				<< t->getLabel() << ","
-				<< t->getPriorityLvl() << "\n";
-			delete t;
+		for (const auto& folder : folders) {
+			for (const auto& t : folder->getTaskVector()) {
+				file << folder->getLabel() << ","
+					<< t->getTask() << ","
+					<< t->getDueDate() << ","
+					<< t->getLabel() << ","
+					<< t->getPriorityLvl() << "\n";
+				delete t;
+			}
 		}
 
-		taskPointers.clear();
 		file.close();
 	}
-	void transfer(std::vector<task*>& taskPointers, const std::string& filename) {
+
+	void transfer(const std::vector<Folder*>& folders, const std::string& filename) {
 		std::ofstream file(filename);
 
 		if (!file.is_open()) {
@@ -74,19 +96,31 @@ namespace tasks {
 			return;
 		}
 
-		for (const auto& t : taskPointers) {
-			file << t->getTask() << ","
-				<< t->getDueDate() << ","
-				<< t->getLabel() << ","
-				<< t->getPriorityLvl() << "\n";
-			delete t;
+		for (const auto& folder : folders) {
+			for (const auto& t : folder->getTaskVector()) {
+				file << folder->getLabel() << ","
+					<< t->getTask() << ","
+					<< t->getDueDate() << ","
+					<< t->getLabel() << ","
+					<< t->getPriorityLvl() << "\n";
+			}
 		}
 
 		file.close();
 	}
 
 	void Folder::PrintTasks(bool toLoad) {
-		if (toLoad)load(pTasks, FILENAME);
+		if (toLoad) {
+			std::vector<Folder*> folders;
+			load(folders, FILENAME);
+			for (auto& folder : folders) {
+				if (folder->getLabel() == label) {
+					pTasks = folder->getTaskVector();
+					break;
+				}
+			}
+		}
+
 		for (task* t : pTasks) {
 			std::cout << "Task: " << t->getTask() << '\n';
 			std::cout << "Due date: " << t->getDueDate() << '\n';

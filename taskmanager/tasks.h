@@ -9,14 +9,12 @@ namespace tasks {
 
 	class task {
 	private:
-
 		std::string text_s;
 		std::string dueDate;
 		int priorityLvl;
 		std::string label;
 
 	public:
-
 		task(std::string t, std::string dd, int pl, std::string l);
 
 		std::string getTask()const { return text_s; }
@@ -47,10 +45,10 @@ namespace tasks {
 	};
 
 	//global
-	void load(std::vector<task*>& taskPointers, const std::string& filename);
-	void unload(std::vector<task*>& taskPointers, const std::string& filename);
-	void transfer(std::vector<task*>& taskPointers, const std::string& filename);
+	void load(std::vector<Folder*>& folders, const std::string& filename);
+	void unload(const std::vector<Folder*>& folders, const std::string& filename);
+	void transfer(const std::vector<Folder*>& folders, const std::string& filename);
 
-	//Functonality
+	//Functionality
 	bool isInt(int& val);
 }
