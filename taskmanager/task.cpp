@@ -66,6 +66,24 @@ namespace tasks {
 		taskPointers.clear();
 		file.close();
 	}
+	void transfer(std::vector<task*>& taskPointers, const std::string& filename) {
+		std::ofstream file(filename);
+
+		if (!file.is_open()) {
+			std::cerr << "Error opening file: " << filename << std::endl;
+			return;
+		}
+
+		for (const auto& t : taskPointers) {
+			file << t->getTask() << ","
+				<< t->getDueDate() << ","
+				<< t->getLabel() << ","
+				<< t->getPriorityLvl() << "\n";
+			delete t;
+		}
+
+		file.close();
+	}
 
 	void Folder::PrintTasks(bool toLoad) {
 		if (toLoad)load(pTasks, FILENAME);

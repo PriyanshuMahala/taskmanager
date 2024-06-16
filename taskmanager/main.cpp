@@ -94,7 +94,7 @@ void LOOP() {
 				if (folder->getLabel() == FolderName) { currentFolder = folder; isFound = true; break; }
 			}
 			if (!isFound) { std::cout << "Could not find folder " << FolderName << '\n'; continue; }
-			currentFolder->PrintTasks(true);
+			currentFolder->PrintTasks(false);
 		}
 	}
 

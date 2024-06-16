@@ -49,6 +49,7 @@ namespace tasks {
 	//global
 	void load(std::vector<task*>& taskPointers, const std::string& filename);
 	void unload(std::vector<task*>& taskPointers, const std::string& filename);
+	void transfer(std::vector<task*>& taskPointers, const std::string& filename);
 
 	//Functonality
 	bool isInt(int& val);
