@@ -19,11 +19,12 @@ void LOOP() {
 		std::cout << "3. Remove folder" << '\n';
 		std::cout << "4. Remove task" << '\n';
 		std::cout << "5. Change " << '\n';
+		std::cout << "6. Display All " << '\n';
 		std::cout << "Enter your option: ";
 
 		// Read option input and validate it
-		if (!(std::cin >> option) || option < 1 || option > 5) {
-			std::cout << "Invalid option! Please enter a valid int between 1 and 5.\n";
+		if (!(std::cin >> option) || option < 1 || option > 6) {
+			std::cout << "Invalid option! Please enter a valid int between 1 and 6.\n";
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			continue;
@@ -82,8 +83,19 @@ void LOOP() {
 			currentFolder->addTask(taskNAME, dueDate, label, PriorityLvl);
 			std::cout << "New task added to " << folderName << " folder" << '\n';
 		}
-		// Handle other options (3, 4, 5) as needed
-		// ...
+		else if (option == 6) {
+			std::string FolderName;
+			tasks::Folder* currentFolder = nullptr;
+			bool isFound = false;
+
+			std::cout << "Enter folder name: ";
+			std::getline(std::cin, FolderName);
+			for (tasks::Folder* folder : folders) {
+				if (folder->getLabel() == FolderName) { currentFolder = folder; isFound = true; break; }
+			}
+			if (!isFound) { std::cout << "Could not find folder " << FolderName << '\n'; continue; }
+			currentFolder->PrintTasks(true);
+		}
 	}
 
 	// Clean up dynamically allocated folders
